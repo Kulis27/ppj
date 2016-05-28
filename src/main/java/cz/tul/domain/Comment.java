@@ -1,23 +1,38 @@
 package cz.tul.domain;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
-/**
- * Created by filak on 28.05.2016.
- */
-public class Comment {
+@Entity
+public class Comment implements Serializable {
 
+    @Id
+    @GeneratedValue
     private Long id;
 
+    @ManyToOne
     private Author author;
 
+    @Column
     private Date creation;
 
+    @Column
     private Date modification;
 
+    @Column
     private Long likes;
 
+    @Column
     private Long dislikes;
+
+    public Comment(Author author, Date creation, Date modification, Long likes, Long dislikes) {
+        this.author = author;
+        this.creation = creation;
+        this.modification = modification;
+        this.likes = likes;
+        this.dislikes = dislikes;
+    }
 
     public Long getId() {
         return id;
