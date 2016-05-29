@@ -23,10 +23,12 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="pr_sem" />
+        <module name="semestral-application" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="pr_sem" target="1.5" />
+      <module name="semestral-application" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
