@@ -1,7 +1,7 @@
 package cz.tul.domain;
 
 import javax.persistence.*;
-import java.net.URL;
+import java.net.URI;
 import java.util.*;
 
 @Entity
@@ -20,7 +20,7 @@ public class Image {
     @ManyToMany(mappedBy = "images")
     private Set<Tag> tags = new HashSet<>();
 
-    private URL url;
+    private URI url;
 
     private String name;
 
@@ -36,7 +36,7 @@ public class Image {
 
     }
 
-    public Image(Author author, URL url, String name, Date creation) {
+    public Image(Author author, URI url, String name, Date creation) {
         this.author = author;
         this.url = url;
         this.name = name;
@@ -74,11 +74,11 @@ public class Image {
         this.tags = tags;
     }
 
-    public URL getUrl() {
+    public URI getUrl() {
         return url;
     }
 
-    public void setUrl(URL url) {
+    public void setUrl(URI url) {
         this.url = url;
     }
 
