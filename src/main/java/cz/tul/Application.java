@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.net.URI;
 import java.util.Date;
+import java.util.Set;
 
 @SpringBootApplication
 public class Application implements CommandLineRunner {
@@ -33,20 +34,20 @@ public class Application implements CommandLineRunner {
         Author filip = new Author("Filip", new Date());
         authorRepository.save(filip);
 
-        Image chelseaLogo = new Image(filip, new URI("https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/768px-Chelsea_FC.svg.png"), "Chelsea Logo", new Date());
-        imageRepository.save(chelseaLogo);
+        Image chelsea = new Image(filip, new URI("https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/768px-Chelsea_FC.svg.png"), "Chelsea", new Date());
+        imageRepository.save(chelsea);
+        Image arsenal = new Image(filip, new URI("https://s-media-cache-ak0.pinimg.com/736x/b3/62/68/b362686170e30ca7ee9a0f9ebe4a2d1d.jpg"), "Arsenal", new Date());
+        imageRepository.save(arsenal);
 
-        Image arsenalLogo = new Image(filip, new URI("https://s-media-cache-ak0.pinimg.com/736x/b3/62/68/b362686170e30ca7ee9a0f9ebe4a2d1d.jpg"), "Arsenal Logo", new Date());
-        imageRepository.save(arsenalLogo);
-
-        Comment chelseaLogoComment = new Comment(filip, chelseaLogo, "Tato sezona se moc nepovedla.", new Date());
-        commentRepository.save(chelseaLogoComment);
+        Comment comment = new Comment(filip, chelsea, "Tato sezona se moc nepovedla.", new Date());
+        commentRepository.save(comment);
 
         Tag fotbal = new Tag("fotbal");
         tagRepository.save(fotbal);
 
-        Tag premierLeague = new Tag("Premier League");
-        tagRepository.save(premierLeague);
+        Set<Tag> tags = chelsea.getTags();
+        tags.add(fotbal);
+        imageRepository.save(chelsea);
     }
 
 }

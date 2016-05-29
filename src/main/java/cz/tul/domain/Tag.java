@@ -1,6 +1,9 @@
 package cz.tul.domain;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,11 +11,10 @@ import java.util.Set;
 public class Tag {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Long id;
 
-    @ManyToMany
-    @JoinTable(name = "IMAGE_TAG", joinColumns = @JoinColumn())
+    @ManyToMany(mappedBy = "tags")
     private Set<Image> images = new HashSet<>();
 
     private String name;

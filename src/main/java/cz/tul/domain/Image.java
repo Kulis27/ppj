@@ -8,7 +8,7 @@ import java.util.*;
 public class Image {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Long id;
 
     @ManyToOne
@@ -17,7 +17,7 @@ public class Image {
     @OneToMany(mappedBy = "image")
     private List<Comment> comments = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "images")
+    @ManyToMany
     private Set<Tag> tags = new HashSet<>();
 
     private URI url;
