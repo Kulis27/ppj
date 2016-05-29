@@ -1,78 +1,53 @@
 package cz.tul.domain;
 
 import javax.persistence.*;
-import java.net.URI;
-import java.util.Date;
-import java.util.List;
+import java.net.URL;
+import java.util.*;
 
 @Entity
 public class Image {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column
-    private URI uri;
-
-    @Column
-    private String name;
-
-    @Column
+    @ManyToOne
     private Author author;
 
-    @Column
+    @OneToMany(mappedBy = "image")
+    private List<Comment> comments = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "images")
+    private Set<Tag> tags = new HashSet<>();
+
+    private URL url;
+
+    private String name;
+
     private Date creation;
 
-    @Column
     private Date modification;
 
-    @Column
     private Long likes;
 
-    @Column
     private Long dislikes;
 
-    @OneToMany
-    private List<String> tags;
+    protected Image() {
 
-    @OneToMany
-    private List<Comment> comments;
+    }
 
-    public Image(URI uri, String name, Author author, Date creation, Date modification, Long likes, Long dislikes, List<String> tags, List<Comment> comments) {
-        this.uri = uri;
-        this.name = name;
+    public Image(Author author, URL url, String name, Date creation) {
         this.author = author;
+        this.url = url;
+        this.name = name;
         this.creation = creation;
-        this.modification = modification;
-        this.likes = likes;
-        this.dislikes = dislikes;
-        this.tags = tags;
-        this.comments = comments;
+        this.modification = creation;
+        this.likes = (long) 0;
+        this.dislikes = (long) 0;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public URI getUri() {
-        return uri;
-    }
-
-    public void setUri(URI uri) {
-        this.uri = uri;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Author getAuthor() {
@@ -81,6 +56,38 @@ public class Image {
 
     public void setAuthor(Author author) {
         this.author = author;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public URL getUrl() {
+        return url;
+    }
+
+    public void setUrl(URL url) {
+        this.url = url;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Date getCreation() {
@@ -115,19 +122,4 @@ public class Image {
         this.dislikes = dislikes;
     }
 
-    public List<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
 }

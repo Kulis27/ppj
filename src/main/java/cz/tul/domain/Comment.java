@@ -1,45 +1,46 @@
 package cz.tul.domain;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Comment implements Serializable {
+public class Comment {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
     private Author author;
 
-    @Column
+    @ManyToOne
+    private Image image;
+
+    private String text;
+
     private Date creation;
 
-    @Column
     private Date modification;
 
-    @Column
     private Long likes;
 
-    @Column
     private Long dislikes;
 
-    public Comment(Author author, Date creation, Date modification, Long likes, Long dislikes) {
+    protected Comment() {
+    }
+
+    public Comment(Author author, Image image, String text, Date creation) {
         this.author = author;
+        this.image = image;
+        this.text = text;
         this.creation = creation;
-        this.modification = modification;
-        this.likes = likes;
-        this.dislikes = dislikes;
+        this.modification = creation;
+        this.likes = (long) 0;
+        this.dislikes = (long) 0;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Author getAuthor() {
@@ -48,6 +49,22 @@ public class Comment implements Serializable {
 
     public void setAuthor(Author author) {
         this.author = author;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public Date getCreation() {
@@ -81,4 +98,5 @@ public class Comment implements Serializable {
     public void setDislikes(Long dislikes) {
         this.dislikes = dislikes;
     }
+
 }

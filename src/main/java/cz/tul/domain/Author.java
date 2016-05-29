@@ -1,23 +1,29 @@
 package cz.tul.domain;
 
-import org.springframework.boot.orm.jpa.EntityScan;
-
 import javax.persistence.*;
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-public class Author implements Serializable {
+public class Author {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column
+    @OneToMany(mappedBy = "author")
+    private List<Image> images = new ArrayList<>();
+
+    @OneToMany(mappedBy = "author")
+    private List<Comment> comments = new ArrayList<>();
+
     private String name;
 
-    @Column
     private Date registration;
+
+    protected Author() {
+    }
 
     public Author(String name, Date registration) {
         this.name = name;
@@ -28,8 +34,12 @@ public class Author implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
     }
 
     public String getName() {
