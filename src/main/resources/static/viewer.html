@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Viewer</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script>
+        var currentImageIndex = 0;
+
+        function handleLinks(totalImages) {
+            if (currentImageIndex <= 0) {
+                currentImageIndex = 0;
+                $('.previous-image').hide();
+            } else {
+                $('.previous-image').show();
+            }
+
+            if (currentImageIndex >= totalImages - 1) {
+                currentImageIndex = totalImages - 1;
+                $('.next-image').hide();
+            } else {
+                $('.next-image').show();
+            }
+        }
+
+        function loadImage() {
+            $.ajax({
+                url: "http://localhost:8080/images?page=" + currentImageIndex + "&size=1"
+            }).then(function(data) {
+                $('.image-name').html(data._embedded.images[0].name);
+                $('.image').attr('src', data._embedded.images[0].url);
+                handleLinks(data.page.totalElements);
+            });
+        }
+
+        function loadPreviousImage() {
+            currentImageIndex--;
+            loadImage();
+        }
+
+        function loadNextImage() {
+            currentImageIndex++
+            loadImage();
+        }
+
+        $(document).ready(loadImage());
+    </script>
+</head>
+<body>
+    <h1 class="image-name"></h1>
+    <div>
+        <img class="image" height="300px"/>
+    </div>
+    <div>
+        <a class="previous-image" href="javascript:loadPreviousImage()">Previous Image</a>
+        <a class="next-image" href="javascript:loadNextImage()">Next Image</a>
+    </div>
+</body>
+</html>
