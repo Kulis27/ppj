@@ -2,58 +2,171 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Image Viewer</title>
+    <title>Prohlížeč obrázků</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script>
-        var currentImageIndex = 0;
+        var currentPage = 0;
 
-        function handleLinks(totalImages) {
-            if (currentImageIndex <= 0) {
-                currentImageIndex = 0;
+        function handleLinks(totalPages) {
+            if (currentPage <= 0) {
+                currentPage = 0;
                 $('.previous-image').hide();
             } else {
                 $('.previous-image').show();
             }
 
-            if (currentImageIndex >= totalImages - 1) {
-                currentImageIndex = totalImages - 1;
+            if (currentPage >= totalPages - 1) {
+                currentPage = totalPages - 1;
                 $('.next-image').hide();
             } else {
                 $('.next-image').show();
             }
         }
 
+        function loadAuthor(url) {
+            $.ajax({
+                url: url
+            }).then(function(data) {
+                $('.image-author').html(data.name);
+            });
+        }
+
+        function loadTags(url) {
+            $.ajax({
+                url: url
+            }).then(function(data) {
+                $('.image-tags').html('');
+                for (var i = 0; i < data._embedded.tags.length; i++) {
+                    $('.image-tags').append(data._embedded.tags[i].name + ' ');
+                }
+            });
+        }
+
+        function loadCommentAuthor(url, index) {
+            $.ajax({
+                url: url
+            }).then(function(data) {
+                $('.comment-' + index + "-author").html(data.name);
+            });
+        }
+
+        function loadComments(url) {
+            $.ajax({
+                url: url
+            }).then(function(data) {
+                $('.image-comments').html('');
+                for (var i = 0; i < data._embedded.comments.length; i++) {
+                    $('.image-comments').append("<p><div>"
+                            + data._embedded.comments[i].text
+                            + "</div><div><span class=\"comment-"
+                            + i
+                            + "-author\"></span>, "
+                            + data._embedded.comments[i].creation
+                            + ", <a href=\"javascript:like('"
+                            + data._embedded.comments[i]._links.like.href
+                            + "')\">like</a>("
+                            + data._embedded.comments[i].likes
+                            + ")/<a href=\"javascript:dislike('"
+                            + data._embedded.comments[i]._links.dislike.href
+                            + "')\">dislike</a>("
+                            + data._embedded.comments[i].dislikes
+                            + ")</div></p>");
+                    loadCommentAuthor(data._embedded.comments[i]._links.author.href, i);
+                }
+            });
+        }
+
         function loadImage() {
             $.ajax({
-                url: "http://localhost:8080/images?page=" + currentImageIndex + "&size=1"
+                url: "http://localhost:8080/images?page=" + currentPage + "&size=1&sort=creation"
             }).then(function(data) {
+                handleLinks(data.page.totalPages);
                 $('.image-name').html(data._embedded.images[0].name);
                 $('.image').attr('src', data._embedded.images[0].url);
-                handleLinks(data.page.totalElements);
+                $('.image-likes-dislikes').html("<a href=\"javascript:like('"
+                        + data._embedded.images[0]._links.like.href
+                        + "')\">like</a>("
+                        + data._embedded.images[0].likes
+                        + ")/<a href=\"javascript:dislike('"
+                        + data._embedded.images[0]._links.dislike.href
+                        + "')\">dislike</a>("
+                        + data._embedded.images[0].dislikes
+                        + ")");
+                $('.image-creation').html(data._embedded.images[0].creation);
+                loadAuthor(data._embedded.images[0]._links.author.href);
+                loadTags(data._embedded.images[0]._links.tags.href);
+                loadComments(data._embedded.images[0]._links.comments.href);
             });
         }
 
         function loadPreviousImage() {
-            currentImageIndex--;
+            currentPage--;
             loadImage();
         }
 
         function loadNextImage() {
-            currentImageIndex++
+            currentPage++
             loadImage();
+        }
+
+        function like(url) {
+            $.ajax({
+                type: "PUT",
+                url: url
+            }).then(loadImage());
+        }
+
+        function dislike(url) {
+            $.ajax({
+                type: "PUT",
+                url: url
+            }).then(loadImage());
         }
 
         $(document).ready(loadImage());
     </script>
 </head>
 <body>
-    <h1 class="image-name"></h1>
-    <div>
-        <img class="image" height="300px"/>
-    </div>
-    <div>
-        <a class="previous-image" href="javascript:loadPreviousImage()">Previous Image</a>
-        <a class="next-image" href="javascript:loadNextImage()">Next Image</a>
-    </div>
+    <table>
+        <tr>
+            <td><b>Navigace</b></td>
+            <td>
+                <div>
+                    <a class="previous-image" href="javascript:loadPreviousImage()">Předchozí obrázek</a>
+                    <a class="next-image" href="javascript:loadNextImage()">Následující obrázek</a>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <img class="image" height="300px"/>
+            </td>
+        </tr>
+        <tr>
+            <td><b>Název</b></td>
+            <td><div class="image-name"></div></td>
+        </tr>
+        <tr>
+            <td><b>Hodnocení</b></td>
+            <td><div class="image-likes-dislikes"></div></td>
+        </tr>
+        <tr>
+            <td><b>Datum vytvoření</b></td>
+            <td><div class="image-creation"></div></td>
+        </tr>
+        <tr>
+            <td><b>Autor</b></td>
+            <td><div class="image-author"></div></td>
+        </tr>
+        <tr>
+            <td><b>Tagy</b></td>
+            <td><div class="image-tags"></div></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="image-comments"></div>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>

@@ -25,20 +25,22 @@ public class ImageController implements ResourceProcessor<Resource<Image>> {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void like(@PathVariable Long id) {
         Image image = imageRepository.findOne(id);
-        if (image != null) {
-            image.setLikes(image.getLikes() + 1);
-            imageRepository.save(image);
+        if (image == null) {
+            throw new ImageNotFound();
         }
+        image.setLikes(image.getLikes() + 1);
+        imageRepository.save(image);
     }
 
     @RequestMapping(path = "/{id}/dislike", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void dislike(@PathVariable Long id) {
         Image image = imageRepository.findOne(id);
-        if (image != null) {
-            image.setDislikes(image.getDislikes() + 1);
-            imageRepository.save(image);
+        if (image == null) {
+            throw new ImageNotFound();
         }
+        image.setDislikes(image.getDislikes() + 1);
+        imageRepository.save(image);
     }
 
     @Override
@@ -47,6 +49,10 @@ public class ImageController implements ResourceProcessor<Resource<Image>> {
         resource.add(linkTo(ImageController.class).slash(image.getId()).slash("like").withRel("like"));
         resource.add(linkTo(ImageController.class).slash(image.getId()).slash("dislike").withRel("dislike"));
         return resource;
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public static class ImageNotFound extends RuntimeException {
     }
 
 }

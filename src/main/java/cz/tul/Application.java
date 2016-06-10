@@ -42,11 +42,21 @@ public class Application implements CommandLineRunner {
         Comment comment = new Comment(filip, chelsea, "Tato sezona se moc nepovedla.", new Date());
         commentRepository.save(comment);
 
+        Comment comment2 = new Comment(filip, chelsea, "To tedy opravdu ne.", new Date());
+        commentRepository.save(comment2);
+
+        Comment comment3 = new Comment(filip, arsenal, "Bla bla bla...", new Date());
+        commentRepository.save(comment3);
+
         Tag fotbal = new Tag("fotbal");
         tagRepository.save(fotbal);
 
+        Tag sport = new Tag("sport");
+        tagRepository.save(sport);
+
         Set<Tag> tags = chelsea.getTags();
         tags.add(fotbal);
+        tags.add(sport);
         imageRepository.save(chelsea);
     }
 

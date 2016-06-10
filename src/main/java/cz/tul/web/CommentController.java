@@ -25,20 +25,22 @@ public class CommentController implements ResourceProcessor<Resource<Comment>> {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void like(@PathVariable Long id) {
         Comment comment = commentRepository.findOne(id);
-        if (comment != null) {
-            comment.setLikes(comment.getLikes() + 1);
-            commentRepository.save(comment);
+        if (comment == null) {
+            throw new CommentNotFound();
         }
+        comment.setLikes(comment.getLikes() + 1);
+        commentRepository.save(comment);
     }
 
     @RequestMapping(path = "/{id}/dislike", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void dislike(@PathVariable Long id) {
         Comment comment = commentRepository.findOne(id);
-        if (comment != null) {
-            comment.setDislikes(comment.getDislikes() + 1);
-            commentRepository.save(comment);
+        if (comment == null) {
+            throw new CommentNotFound();
         }
+        comment.setDislikes(comment.getDislikes() + 1);
+        commentRepository.save(comment);
     }
 
     @Override
@@ -47,6 +49,10 @@ public class CommentController implements ResourceProcessor<Resource<Comment>> {
         resource.add(linkTo(CommentController.class).slash(comment.getId()).slash("like").withRel("like"));
         resource.add(linkTo(CommentController.class).slash(comment.getId()).slash("dislike").withRel("dislike"));
         return resource;
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public static class CommentNotFound extends RuntimeException {
     }
 
 }
