@@ -11,6 +11,11 @@ public class ImageService {
     @Autowired
     private ImageRepository repository;
 
+    public Long create(Image image) {
+        repository.save(image);
+        return image.getId();
+    }
+
     public void like(Long id) {
         Image image = repository.findOne(id);
         if (image == null) {

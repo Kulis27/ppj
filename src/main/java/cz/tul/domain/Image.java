@@ -1,11 +1,12 @@
 package cz.tul.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.net.URI;
 import java.util.*;
 
 @Entity
-public class Image {
+public class Image implements Serializable {
 
     @Id
     @GeneratedValue
