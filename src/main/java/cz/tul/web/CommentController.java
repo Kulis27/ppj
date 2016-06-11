@@ -1,16 +1,14 @@
 package cz.tul.web;
 
 import cz.tul.domain.Comment;
-import cz.tul.domain.CommentRepository;
+import cz.tul.service.CommentNotFoundException;
+import cz.tul.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceProcessor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
@@ -19,28 +17,24 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 public class CommentController implements ResourceProcessor<Resource<Comment>> {
 
     @Autowired
-    private CommentRepository commentRepository;
+    private CommentService service;
 
     @RequestMapping(path = "/{id}/like", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void like(@PathVariable Long id) {
-        Comment comment = commentRepository.findOne(id);
-        if (comment == null) {
-            throw new CommentNotFound();
-        }
-        comment.setLikes(comment.getLikes() + 1);
-        commentRepository.save(comment);
+        service.like(id);
     }
 
     @RequestMapping(path = "/{id}/dislike", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void dislike(@PathVariable Long id) {
-        Comment comment = commentRepository.findOne(id);
-        if (comment == null) {
-            throw new CommentNotFound();
-        }
-        comment.setDislikes(comment.getDislikes() + 1);
-        commentRepository.save(comment);
+        service.dislike(id);
+    }
+
+    @ExceptionHandler(CommentNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public void handleCommentNotFoundException(CommentNotFoundException exception) {
+
     }
 
     @Override
@@ -49,10 +43,6 @@ public class CommentController implements ResourceProcessor<Resource<Comment>> {
         resource.add(linkTo(CommentController.class).slash(comment.getId()).slash("like").withRel("like"));
         resource.add(linkTo(CommentController.class).slash(comment.getId()).slash("dislike").withRel("dislike"));
         return resource;
-    }
-
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public static class CommentNotFound extends RuntimeException {
     }
 
 }
