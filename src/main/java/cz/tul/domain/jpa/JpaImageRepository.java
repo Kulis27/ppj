@@ -12,7 +12,7 @@ import java.util.List;
 
 @Profile({ApplicationProfile.PROD_MYSQL, ApplicationProfile.TEST})
 @RepositoryRestResource(collectionResourceRel = "images", path = "images")
-public interface JpaImageRepository extends ImageRepository<Image, Long> {
+public interface JpaImageRepository extends ImageRepository {
 
     List<Image> findByName(@Param("name") String name);
 

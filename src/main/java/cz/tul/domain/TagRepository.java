@@ -3,8 +3,6 @@ package cz.tul.domain;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import java.io.Serializable;
-
 @NoRepositoryBean
-public interface TagRepository<T, ID extends Serializable> extends PagingAndSortingRepository<T, ID> {
+public interface TagRepository extends PagingAndSortingRepository<Tag, Long> {
 }

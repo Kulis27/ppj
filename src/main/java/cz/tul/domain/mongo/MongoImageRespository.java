@@ -11,7 +11,7 @@ import java.util.List;
 
 @Profile(ApplicationProfile.PROD_MONGO)
 @RepositoryRestResource(collectionResourceRel = "images", path = "images")
-public interface MongoImageRespository extends ImageRepository<Image, Long> {
+public interface MongoImageRespository extends ImageRepository {
 
     List<Image> findByName(@Param("name") String name);
 
