@@ -53,14 +53,14 @@ public class ApplicationTests {
 
     @Test
     public void findImagesByAuthorNameUsingRepository() throws Exception {
-        List<Image> images = imageRepository.findByAuthorName("Filip");
+        List<Image> images = imageRepository.findByAuthorName("Fila");
         assertEquals(2, images.size());
     }
 
     @Test
     public void findImagesByTagNameUsingRepository() throws Exception {
         List<Image> images = imageRepository.findByTagName("fotbal");
-        assertEquals(1, images.size());
+        assertEquals(2, images.size());
     }
 
     @Test
@@ -78,7 +78,7 @@ public class ApplicationTests {
         String url = "http://localhost:8080/images/search/";
         Traverson traverson = new Traverson(new URI(url), MediaTypes.HAL_JSON);
         Resources<Image> images = traverson
-                .follow(rel("findByAuthorName").withParameter("name", "Filip"))
+                .follow(rel("findByAuthorName").withParameter("name", "Fila"))
                 .toObject(new ParameterizedTypeReference<Resources<Image>>() {});
         assertEquals(2, images.getContent().size());
     }
@@ -90,7 +90,7 @@ public class ApplicationTests {
         Resources<Image> images = traverson
                 .follow(rel("findByTagName").withParameter("name", "fotbal"))
                 .toObject(new ParameterizedTypeReference<Resources<Image>>() {});
-        assertEquals(1, images.getContent().size());
+        assertEquals(2, images.getContent().size());
     }
 
 }
