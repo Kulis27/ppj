@@ -1,6 +1,7 @@
 package cz.tul.domain;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,9 +11,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
+@Document
 public class Comment implements Serializable {
 
     @Id
+    @org.springframework.data.annotation.Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;

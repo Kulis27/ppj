@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.URI;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @Component
 public class DataInitializer {
@@ -60,7 +60,7 @@ public class DataInitializer {
         Tag sport = new Tag("sport");
         tagRepository.save(sport);
 
-        Set<Tag> tags = chelsea.getTags();
+        List<Tag> tags = chelsea.getTags();
         tags.add(fotbal);
         tags.add(sport);
         imageRepository.save(chelsea);

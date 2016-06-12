@@ -1,16 +1,22 @@
 package cz.tul.domain;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Entity
+@Document
 public class Image implements Serializable {
 
     @Id
+    @org.springframework.data.annotation.Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
@@ -19,10 +25,12 @@ public class Image implements Serializable {
     private Author author;
 
     @OneToMany(mappedBy = "image")
+    @DBRef
     private List<Comment> comments = new ArrayList<>();
 
     @ManyToMany
-    private Set<Tag> tags = new HashSet<>();
+    @DBRef
+    private List<Tag> tags = new ArrayList<>();
 
     private URI url;
 
@@ -70,11 +78,11 @@ public class Image implements Serializable {
         this.comments = comments;
     }
 
-    public Set<Tag> getTags() {
+    public List<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(Set<Tag> tags) {
+    public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
 

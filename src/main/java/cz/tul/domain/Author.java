@@ -1,29 +1,23 @@
 package cz.tul.domain;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
+@Document
 public class Author implements Serializable {
 
     @Id
+    @org.springframework.data.annotation.Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
-
-    @OneToMany(mappedBy = "author")
-    private List<Image> images = new ArrayList<>();
-
-    @OneToMany(mappedBy = "author")
-    private List<Comment> comments = new ArrayList<>();
 
     private String name;
 
@@ -39,14 +33,6 @@ public class Author implements Serializable {
 
     public String getId() {
         return id;
-    }
-
-    public List<Image> getImages() {
-        return images;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
     }
 
     public String getName() {

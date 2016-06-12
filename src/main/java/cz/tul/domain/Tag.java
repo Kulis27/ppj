@@ -1,25 +1,22 @@
 package cz.tul.domain;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
+@Document
 public class Tag implements Serializable {
 
     @Id
+    @org.springframework.data.annotation.Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
-
-    @ManyToMany(mappedBy = "tags")
-    private Set<Image> images = new HashSet<>();
 
     private String name;
 
@@ -33,14 +30,6 @@ public class Tag implements Serializable {
 
     public String getId() {
         return id;
-    }
-
-    public Set<Image> getImages() {
-        return images;
-    }
-
-    public void setImages(Set<Image> images) {
-        this.images = images;
     }
 
     public String getName() {
