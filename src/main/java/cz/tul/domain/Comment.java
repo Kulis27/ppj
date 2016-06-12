@@ -23,9 +23,6 @@ public class Comment implements Serializable {
     @ManyToOne
     private Author author;
 
-    @ManyToOne
-    private Image image;
-
     private String text;
 
     private Date creation;
@@ -39,9 +36,8 @@ public class Comment implements Serializable {
     protected Comment() {
     }
 
-    public Comment(Author author, Image image, String text, Date creation) {
+    public Comment(Author author, String text, Date creation) {
         this.author = author;
-        this.image = image;
         this.text = text;
         this.creation = creation;
         this.modification = creation;
@@ -59,14 +55,6 @@ public class Comment implements Serializable {
 
     public void setAuthor(Author author) {
         this.author = author;
-    }
-
-    public Image getImage() {
-        return image;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
     }
 
     public String getText() {

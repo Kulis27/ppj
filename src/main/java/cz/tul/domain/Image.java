@@ -24,12 +24,11 @@ public class Image implements Serializable {
     @ManyToOne
     private Author author;
 
-    @OneToMany(mappedBy = "image")
+    @OneToMany
     @DBRef
     private List<Comment> comments = new ArrayList<>();
 
     @ManyToMany
-    @DBRef
     private List<Tag> tags = new ArrayList<>();
 
     private URI url;
