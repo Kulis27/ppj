@@ -12,7 +12,7 @@ public class CommentService {
     private CommentRepository repository;
 
     public void like(Long id) {
-        Comment comment = repository.findOne(id);
+        Comment comment = (Comment) repository.findOne(id);
         if (comment == null) {
             throw new CommentNotFoundException();
         }
@@ -21,7 +21,7 @@ public class CommentService {
     }
 
     public void dislike(Long id) {
-        Comment comment = repository.findOne(id);
+        Comment comment = (Comment) repository.findOne(id);
         if (comment == null) {
             throw new CommentNotFoundException();
         }

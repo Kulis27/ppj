@@ -17,7 +17,7 @@ public class ImageService {
     }
 
     public void like(Long id) {
-        Image image = repository.findOne(id);
+        Image image = (Image) repository.findOne(id);
         if (image == null) {
             throw new ImageNotFoundException();
         }
@@ -26,7 +26,7 @@ public class ImageService {
     }
 
     public void dislike(Long id) {
-        Image image = repository.findOne(id);
+        Image image = (Image) repository.findOne(id);
         if (image == null) {
             throw new ImageNotFoundException();
         }

@@ -1,8 +1,10 @@
 package cz.tul.domain;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-@RepositoryRestResource(collectionResourceRel = "tags", path = "tags")
-public interface TagRepository extends JpaRepository<Tag, Long> {
+import java.io.Serializable;
+
+@NoRepositoryBean
+public interface TagRepository<T, ID extends Serializable> extends PagingAndSortingRepository<T, ID> {
 }
