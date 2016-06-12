@@ -21,13 +21,13 @@ public class ImageController implements ResourceProcessor<Resource<Image>> {
 
     @RequestMapping(path = "/{id}/like", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void like(@PathVariable Long id) {
+    public void like(@PathVariable String id) {
         service.like(id);
     }
 
     @RequestMapping(path = "/{id}/dislike", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void dislike(@PathVariable Long id) {
+    public void dislike(@PathVariable String id) {
         service.dislike(id);
     }
 

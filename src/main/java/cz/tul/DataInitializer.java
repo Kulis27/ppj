@@ -29,6 +29,11 @@ public class DataInitializer {
     RabbitTemplate rabbitTemplate;
 
     public void initData() throws Exception {
+        authorRepository.deleteAll();
+        imageRepository.deleteAll();
+        commentRepository.deleteAll();
+        tagRepository.deleteAll();
+
         Author filip = new Author("Filip", new Date());
         authorRepository.save(filip);
 

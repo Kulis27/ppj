@@ -11,12 +11,12 @@ public class ImageService {
     @Autowired
     private ImageRepository repository;
 
-    public Long create(Image image) {
+    public String create(Image image) {
         repository.save(image);
         return image.getId();
     }
 
-    public void like(Long id) {
+    public void like(String id) {
         Image image = (Image) repository.findOne(id);
         if (image == null) {
             throw new ImageNotFoundException();
@@ -25,7 +25,7 @@ public class ImageService {
         repository.save(image);
     }
 
-    public void dislike(Long id) {
+    public void dislike(String id) {
         Image image = (Image) repository.findOne(id);
         if (image == null) {
             throw new ImageNotFoundException();

@@ -1,5 +1,7 @@
 package cz.tul.domain;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,8 +13,9 @@ import java.util.Date;
 public class Comment implements Serializable {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
 
     @ManyToOne
     private Author author;
@@ -43,7 +46,7 @@ public class Comment implements Serializable {
         this.dislikes = (long) 0;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

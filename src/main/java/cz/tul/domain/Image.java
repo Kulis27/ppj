@@ -1,5 +1,7 @@
 package cz.tul.domain;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.net.URI;
@@ -9,8 +11,9 @@ import java.util.*;
 public class Image implements Serializable {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
 
     @ManyToOne
     private Author author;
@@ -47,7 +50,7 @@ public class Image implements Serializable {
         this.dislikes = (long) 0;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

@@ -1,5 +1,7 @@
 package cz.tul.domain;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,8 +15,9 @@ import java.util.List;
 public class Author implements Serializable {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
 
     @OneToMany(mappedBy = "author")
     private List<Image> images = new ArrayList<>();
@@ -34,7 +37,7 @@ public class Author implements Serializable {
         this.registration = registration;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

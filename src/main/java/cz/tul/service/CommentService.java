@@ -11,7 +11,7 @@ public class CommentService {
     @Autowired
     private CommentRepository repository;
 
-    public void like(Long id) {
+    public void like(String id) {
         Comment comment = (Comment) repository.findOne(id);
         if (comment == null) {
             throw new CommentNotFoundException();
@@ -20,7 +20,7 @@ public class CommentService {
         repository.save(comment);
     }
 
-    public void dislike(Long id) {
+    public void dislike(String id) {
         Comment comment = (Comment) repository.findOne(id);
         if (comment == null) {
             throw new CommentNotFoundException();

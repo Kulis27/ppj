@@ -23,12 +23,12 @@ public class ImageMDB {
     }
 
     @RabbitListener(queues = likeQueue)
-    public void like(Long id) {
+    public void like(String id) {
         service.like(id);
     }
 
     @RabbitListener(queues = dislikeQueue)
-    public void dislike(Long id) {
+    public void dislike(String id) {
         service.dislike(id);
     }
 
