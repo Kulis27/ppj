@@ -1,8 +1,6 @@
 package cz.tul;
 
 import cz.tul.domain.*;
-import cz.tul.messaging.ImageMDB;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,15 +23,7 @@ public class DataInitializer {
     @Autowired
     private TagRepository tagRepository;
 
-    @Autowired
-    RabbitTemplate rabbitTemplate;
-
     public void initData() throws Exception {
-        authorRepository.deleteAll();
-        imageRepository.deleteAll();
-        commentRepository.deleteAll();
-        tagRepository.deleteAll();
-
         Author filip = new Author("Fila", new Date());
         authorRepository.save(filip);
         Author matej = new Author("Mates", new Date());
@@ -69,9 +59,7 @@ public class DataInitializer {
         imageRepository.save(arsenal);
 
         Image manchester = new Image(matej, new URI("https://storage.designcrowd.com/design_img/138412/123024/123024_1860727_138412_image.png"), "Manchester", new Date());
-        rabbitTemplate.convertAndSend(ImageMDB.exchange, ImageMDB.createQueue, manchester);
-        rabbitTemplate.convertAndSend(ImageMDB.exchange, ImageMDB.likeQueue, chelsea.getId());
-        rabbitTemplate.convertAndSend(ImageMDB.exchange, ImageMDB.dislikeQueue, arsenal.getId());
+        imageRepository.save(manchester);
     }
 
 }

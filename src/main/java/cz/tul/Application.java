@@ -1,5 +1,6 @@
 package cz.tul;
 
+import cz.tul.domain.ImageRepository;
 import cz.tul.messaging.ImageMDB;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -19,6 +20,9 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories(basePackages = "cz.tul.domain.mongo")
 @EnableRabbit
 public class Application implements CommandLineRunner {
+
+    @Autowired
+    private ImageRepository imageRepository;
 
     @Autowired
     private DataInitializer dataInitializer;
@@ -64,7 +68,9 @@ public class Application implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        dataInitializer.initData();
+        if (imageRepository.count() == 0) {
+            dataInitializer.initData();
+        }
     }
 
 }
