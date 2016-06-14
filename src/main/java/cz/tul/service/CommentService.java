@@ -11,6 +11,28 @@ public class CommentService {
     @Autowired
     private CommentRepository repository;
 
+    public String create(Comment comment) {
+        repository.save(comment);
+        return comment.getId();
+    }
+
+    public Comment findOne(String id) {
+        Comment comment = (Comment) repository.findOne(id);
+        if (comment == null) {
+            throw new CommentNotFoundException();
+        } else {
+            return comment;
+        }
+    }
+
+    public Comment update(Comment comment) {
+        return repository.save(comment);
+    }
+
+    public void delete(String id) {
+        repository.delete(id);
+    }
+
     public void like(String id) {
         Comment comment = (Comment) repository.findOne(id);
         if (comment == null) {

@@ -14,7 +14,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @RepositoryRestController
 @RequestMapping(path = "/images")
-public class ImageController implements ResourceProcessor<Resource<Image>> {
+public class RestImageController implements ResourceProcessor<Resource<Image>> {
 
     @Autowired
     private ImageService service;
@@ -40,8 +40,8 @@ public class ImageController implements ResourceProcessor<Resource<Image>> {
     @Override
     public Resource<Image> process(Resource<Image> resource) {
         Image image = resource.getContent();
-        resource.add(linkTo(ImageController.class).slash(image.getId()).slash("like").withRel("like"));
-        resource.add(linkTo(ImageController.class).slash(image.getId()).slash("dislike").withRel("dislike"));
+        resource.add(linkTo(RestImageController.class).slash(image.getId()).slash("like").withRel("like"));
+        resource.add(linkTo(RestImageController.class).slash(image.getId()).slash("dislike").withRel("dislike"));
         return resource;
     }
 

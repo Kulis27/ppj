@@ -14,7 +14,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @RepositoryRestController
 @RequestMapping(path = "/comments")
-public class CommentController implements ResourceProcessor<Resource<Comment>> {
+public class RestCommentController implements ResourceProcessor<Resource<Comment>> {
 
     @Autowired
     private CommentService service;
@@ -40,8 +40,8 @@ public class CommentController implements ResourceProcessor<Resource<Comment>> {
     @Override
     public Resource<Comment> process(Resource<Comment> resource) {
         Comment comment = resource.getContent();
-        resource.add(linkTo(CommentController.class).slash(comment.getId()).slash("like").withRel("like"));
-        resource.add(linkTo(CommentController.class).slash(comment.getId()).slash("dislike").withRel("dislike"));
+        resource.add(linkTo(RestCommentController.class).slash(comment.getId()).slash("like").withRel("like"));
+        resource.add(linkTo(RestCommentController.class).slash(comment.getId()).slash("dislike").withRel("dislike"));
         return resource;
     }
 
