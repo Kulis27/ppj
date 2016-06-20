@@ -3,9 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Prohlížeč obrázků</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="jquery.min.js"></script>
+    <script src="jquery.i18n.properties.min.js"></script>
     <script>
         var currentPage = 0;
+        var serverPort = 8080;
+
+        jQuery.i18n.properties( {
+            name : 'server',
+            path : '../',
+            mode : 'map',
+            callback: function() {
+                serverPort = jQuery.i18n.prop('server.port');
+            }
+        });
 
         function handleLinks(totalPages) {
             if (currentPage <= 0) {
@@ -78,7 +89,7 @@
 
         function loadImage() {
             $.ajax({
-                url: "http://localhost:8080/images?page=" + currentPage + "&size=1&sort=creation"
+                url: "http://localhost:" + serverPort + "/images?page=" + currentPage + "&size=1&sort=creation"
             }).then(function(data) {
                 handleLinks(data.page.totalPages);
                 $('.image-name').html(data._embedded.images[0].name);
