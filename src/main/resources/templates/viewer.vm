@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Prohlížeč obrázků</title>
+</head>
+<body>
+<table>
+    <tr>
+        <td><b>Navigace</b></td>
+        <td>
+            <div>
+                #if(${page.hasPrevious()})
+                    #set($previousPageId = $page.getNumber() - 1)
+                    <a href="?page=${previousPageId}">Předchozí obrázek</a>
+                #end
+                #if(${page.hasNext()})
+                    #set($nextPageId = $page.getNumber() + 1)
+                    <a href="?page=${nextPageId}">Následující obrázek</a>
+                #end
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <img src="${image.Url}" height="300px"/>
+        </td>
+    </tr>
+    <tr>
+        <td><b>Název</b></td>
+        <td>${image.Name}</td>
+    </tr>
+    <tr>
+        <td><b>Hodnocení</b></td>
+        <td><a href="./likeImage?image=${image.Id}&page=${page.getNumber()}">like</a>(${image.Likes})/<a href="./dislikeImage?image=${image.Id}&page=${page.getNumber()}">dislike</a>(${image.Dislikes})</td>
+    </tr>
+    <tr>
+        <td><b>Datum vytvoření</b></td>
+        <td>${image.Creation}</td>
+    </tr>
+    <tr>
+        <td><b>Autor</b></td>
+        <td>${image.Author.Name}</td>
+    </tr>
+    <tr>
+        <td><b>Tagy</b></td>
+        <td>
+            #foreach($tag in $image.Tags)
+                ${tag.Name}
+            #end
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            #foreach($comment in $image.Comments)
+                <p>
+                    <div>${comment.Text}</div>
+                    <div>
+                        ${comment.Author.Name},
+                        ${comment.Creation},
+                        <a href="./likeComment?comment=${comment.Id}&page=${page.getNumber()}">like</a>(${comment.Likes})/<a href="./dislikeComment?comment=${comment.Id}&page=${page.getNumber()}">dislike</a>(${comment.Dislikes})
+                    </div>
+                </p>
+            #end
+        </td>
+    </tr>
+</table>
+</body>
+</html>
