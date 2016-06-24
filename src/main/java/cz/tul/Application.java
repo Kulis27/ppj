@@ -12,7 +12,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
@@ -20,7 +19,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableJpaRepositories(basePackages = "cz.tul.domain.jpa")
 @EnableMongoRepositories(basePackages = "cz.tul.domain.mongo")
 @EnableRabbit
-@PropertySource("/static/server.properties")
 public class Application implements CommandLineRunner {
 
     @Autowired
